@@ -33,23 +33,31 @@ yum_repository 'mongodb-org-3.4' do
 	gpgcheck false	
 	enabled true
 end
-# If you are running a 32-bit system, which is not recommended for production deployments, use the following configuration:
-#
-# [mongodb]
-# name=MongoDB Repository
-# baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/i686/
-# gpgcheck=0
-# enabled=1
 #
 # Install the MongoDB packages and associated tools.
 #
-# sudo yum install mongodb-org
-#
+
+#used package resourse. No need for any other sytax since install is the defaultaction. was thinking that I would have to use yum_package but 
+#chef figures out the correct package software. Better portability.
+package 'mongodb-org'
 #
 # Start MongoDB.
 #
 # sudo service mongod start
 #
+
+#used the service resource and the action syntax with the start symbol  to start mongo after install. 
+service 'mongod' do
+	action :start
+end
+
 # ensure that MongoDB will start following a system reboot by issuing the following command:
 #
 # sudo chkconfig mongod on#
+#
+
+#used the service resource and action sytax with the symbol action to make sure #the service started after reboot. I could have combined the two resouces but wanted to show understanding of the different symbols.
+service 'mongod' do
+	action :enable
+end
+
