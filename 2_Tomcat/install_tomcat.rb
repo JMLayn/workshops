@@ -81,10 +81,13 @@ execute 'update permissions' do
 end 
 
 #Install the Systemd Unit File
-#
 #$ sudo vi /etc/systemd/system/tomcat.service
+#Reload Systemd to load the Tomcat Unit file
+#Ensure tomcat is started and enabled
+#used the systemd_unit resource to combine the creation,start, enable of tomcat
+#service as well as the reload of Systemd. At first it used the file resource toc reate the file but found out I could do all of the steps with just one resource.
 
-file '/etc/systemd/system/tomcat.service' do
+systemd_unit 'tomcat.service' do
 	content '# Systemd unit file for tomcat
 [Unit]
 Description=Apache Tomcat Web Application Container
@@ -111,4 +114,11 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target'
+	action [:create, :start, :enable]#:start -->$ sudo systemctl start tomcat
+                                         #:enable-->$ sudo systemctl enable tomcat
+	triggers_reload true #$ sudo systemctl daemon-reload
+end
+
+http_request 'tomcat check' do
+	url 'http://localhost:8080'
 end
