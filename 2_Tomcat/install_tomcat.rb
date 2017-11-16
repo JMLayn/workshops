@@ -56,7 +56,7 @@ directory '/opt/tomcat'
 #$ sudo tar xvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1
 
 #used execute resource to extract the file. Saw there was some development of 
-#a tar recipe at one point. Guard uses Ruby class(?) File in the conditional to
+#a tar recipe at one point. Guard uses Ruby class File in the conditional to
 #check if the catalina.jar file exists. I noticed execute can be useful but also
 #a crutch.  
 
@@ -73,7 +73,9 @@ end
 #$ sudo chmod g+x conf
 #$ sudo chown -R tomcat webapps/ work/ temp/ logs/
 
-#used the execute resource instead of the directory resource since it will not recusively do permissions. In a strict environment, I can see using directory and explicitly writing out the permissions.Guard checks to make sure tomcat is group owner. 
+#used the execute resource instead of the directory resource since it will not recusively do permissions.
+#In a strict environment, I can see using directory and explicitly writing out the permissions.
+#Guard checks to make sure tomcat is group owner. 
 execute 'update permissions' do
 	command 'chgrp -R tomcat /opt/tomcat;chmod -R g+r conf;chmod g+x conf;chown -R tomcat webapps/ work/ temp/ logs/;'
 	cwd '/opt/tomcat'
@@ -84,8 +86,8 @@ end
 #$ sudo vi /etc/systemd/system/tomcat.service
 #Reload Systemd to load the Tomcat Unit file
 #Ensure tomcat is started and enabled
-#used the systemd_unit resource to combine the creation,start, enable of tomcat
-#service as well as the reload of Systemd. At first it used the file resource toc reate the file but found out I could do all of the steps with just one resource.
+#used the systemd_unit resource to combine the creation, start, enable of tomcat service as well as the reload of Systemd.
+#At first, I started to use the file resource to create the file but found out I could do all of the steps with just the system_unitd resource.
 
 systemd_unit 'tomcat.service' do
 	content '# Systemd unit file for tomcat
@@ -119,6 +121,7 @@ WantedBy=multi-user.target'
 	triggers_reload true #$ sudo systemctl daemon-reload
 end
 
+#check to make sure tomcat is running.
 http_request 'tomcat check' do
 	url 'http://localhost:8080'
 end
