@@ -37,7 +37,7 @@ end
 # Install the MongoDB packages and associated tools.
 #
 
-#used package resourse. No need for any other sytax since install is the defaultaction. was thinking that I would have to use yum_package but 
+#used package resourse. No need for any other sytax since install is the default action. Was thinking that I would have to use yum_package but 
 #chef figures out the correct package software. Better portability.
 package 'mongodb-org'
 #

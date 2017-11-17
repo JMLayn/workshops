@@ -16,7 +16,7 @@ end
 package %w(build-essential libssl-dev libyaml-dev libreadline-dev openssl curl git-core zlib1g-dev bison libxml2-dev libxslt1-dev libcurl4-openssl-dev nodejs libsqlite3-dev sqlite3) do
 end
 
-# used File class with expand_path. looked for "return users home directory in ruby" google which led me to stackoverflow page and then me rubydoc on Method File.expand_path
+# used File class with expand_path. looked for "return users home directory in ruby" google which led me to stackoverflow page and then to rubydoc on Method File.expand_path
 
 ruby_home = File.expand_path("~/ruby")
 directory ruby_home
