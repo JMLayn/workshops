@@ -26,5 +26,11 @@ remote_file ruby_home + '/ruby-2.1.3.tar.gz' do
 	source 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.3.tar.gz'
 	action :create
 end
+
+execute 'extract ruby tarball' do
+	command 'tar -xzf ruby-2.1.3.tar.gz'
+	cwd ruby_home
+	not_if { File.exists?(ruby_home + "/ruby-2.1.3/configure" ) }
+end
 	
 
